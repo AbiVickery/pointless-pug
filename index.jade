@@ -1,0 +1,16 @@
+const pug = require('pug');
+
+// Compile the source code
+const compiledFunction = pug.compileFile('templage.pug');
+
+// Render a set of data
+console.log(compiledFunction({
+    name: 'Abby'
+}));
+// "<p>Abby's Pug source code!</p>"
+
+// Render another set of data
+console.log(compiledFunction({
+    name: 'Curry'
+}));
+// "<p>Curry's Pug source code!</p>"
