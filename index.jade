@@ -14,3 +14,89 @@ console.log(compiledFunction({
     name: 'Curry'
 }));
 // "<p>Curry's Pug source code!</p>"
+
+//- -------------
+
+pug.render('p Hello Internet!');
+
+//- -------------
+
+var pug = require('pug');
+
+// Compile a function
+var fn = pug.compile('string of pug', options);
+
+// Render the function
+var html = fn(locals);
+// => '<string>of pug</string>'
+
+//- -------------
+
+var pug = require('pug');
+
+// Compile a function
+var fn = pug.compileClient('string of pug', options);
+
+// Render teh function
+var html = fn(locals);
+// => 'function template(locals) { return "<string>of pug</string>"; }'
+
+//- ------------------
+
+//- {
+//-     'body': 'function (locals) {...}',
+//-     'dependencies': ['filename.pug']
+//- }
+
+//- ------------
+h1 This is a Pug template
+h1 By #{author}
+
+//- ----------------
+
+var fs = require('fs');
+var pug = require('pug');
+
+// Compile the template to a function string
+var jsFunctionString = pug.compileFileClient('/path/to/pugFile.pug', {name: "fancyTemplateFun"});
+
+// Maybe you want to compile all of your templates to a templates.js file and serve it to the client
+fs.writeFileSync("templates.js", jsFunctionString);
+
+//- -------------------------------
+
+function fancyTemplateFun(locals) {
+    var buf = [];
+    var pug_misins = {};
+    var pug_interp;
+
+    var locals_for_with = (locals || {});
+
+    (function (author) {
+        buf.push("<h1>This is a Pug template</h1><h2>By "
+        + (pug.escape((pug_interp = author) == null ? '' : pug_interp))
+        + "</h2>");
+    }.call(this, "author" in locals_for_with ?
+    locals_for_with.author : typeof author !== "undefined" ?
+    author : undefined)
+    );
+
+    return buf.join("");
+}
+
+//- -----------------
+
+var pug = require('pug');
+
+var html = pug.render('string of pug', options);
+// => '<string>of pug</string>'
+
+//- -----------------
+
+var pug = require('pug');
+
+var html = pug.renderFile('path/to/file.pug', options);
+// ...
+
+//- -------------------------
+
